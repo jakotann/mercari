@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "disable_existing_loggers": false,
+    "formatters": {
+        "simple": {
+            "format": "%(asctime)s %(name)s:%(lineno)s %(funcName)s [%(levelname)s]: %(message)s"
+        }
+    },
+
+    "handlers": {
+        "consoleHandler": {
+            "class": "logging.StreamHandler",
+            "level": "INFO",
+            "formatter": "simple",
+            "stream": "ext://sys.stdout"
+        },
+        "rotatingFileHandler": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "formatter": "simple",
+            "filename": "logs//rotatingLog.txt",
+            "encoding": "UTF-8",
+            "mode": "a",
+            "maxBytes": 1024000,
+            "backupCount": 10
+        }
+    },
+
+    "loggers": {
+        "default": {
+            "level": "DEBUG",
+            "handlers": ["consoleHandler", "rotatingFileHandler"],
+            "propagate": false
+        }
+    },
+
+    "root": {
+        "level": "INFO"
+    }
+}

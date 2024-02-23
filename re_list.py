@@ -102,45 +102,15 @@ def execute(driver, wb, cells, logger):
     if itemA.Equals(itemB):
         logger.info('　下書き作成　完了')
 
-#        # 出品
-#        logger.info('　新商品を出品')
-#        tag_wk = page_edit.find_element(By.XPATH, '//div[@data-testid="list-draft-button"]/button')
-#        common.clickAndWait(driver, tag_wk)
-#
-#        # 新商品IDの取得
-#        tag_main = common.getElement(driver, '//*[@id="main"]')
-#        tag_wk = tag_main.find_element(By.XPATH, '//a[@data-location="listing_complete:item"]')
-#        url = tag_wk.get_attribute('href')
-#        新商品ID = url.split('/')[-1]
-#
-#        # 古い商品の削除
-#        logger.info('　旧商品を削除')
-#        common.getPage(driver, common.URL_商品編集ページ + 商品ID)
-#
-#        # 一時停止中（1番上のボタンが"再開"）の場合
-#        tag_main = common.getElement(driver, '//*[@id="main"]')
-#        tag_wk = tag_main.find_element(By.XPATH, '//button[@data-testid="activate-button"]')
-#        if '再開' in tag_wk.text:
-#            # 削除ボタンクリック
-#            tag_wk = tag_main.find_element(By.XPATH, '//button[@data-testid="delete-button"]')
-#            common.clickAndWait(driver, tag_wk)
-#            # 確認画面でも削除ボタンクリック
-#            tag_wk = tag_main.find_element(By.XPATH, '//div[@data-testid="dialog-action-button"]/button')
-#            common.clickAndWait(driver, tag_wk)
-#        else:
-#            logger.info('　エラー：旧商品が公開停止中でない')
-#            return
+        # 商品リストの更新
+        logger.info('　エクセルを更新')
+        cells.商品名.value = itemA.商品名
+        cells.出品日.value = datetime.now().strftime('%Y/%m/%d')
+        cells.対象.value = None
+        wb.save(common.getItemListFilePath())
     else:
         logger.info('　エラー：旧商品と新商品(下書き)に差異あり')
-        return
 
-    # 商品リストの更新
-    logger.info('　エクセルを更新')
-    cells.商品URL.value = common.URL_商品詳細ページ + 新商品ID
-    cells.商品名.value = itemA.商品名
-    cells.出品日.value = datetime.now().strftime('%Y/%m/%d')
-    cells.対象.value = None
-    wb.save(common.getItemListFilePath())
 
 #--------------------------------------------------
 # メイン処理
